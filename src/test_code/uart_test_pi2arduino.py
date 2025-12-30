@@ -1,7 +1,7 @@
 import serial
 import time
 
-port = '/dev/ttyS0'
+port = '/dev/serial0'
 baud = 115200
 
 ser = serial.Serial(port, baud)
@@ -20,4 +20,4 @@ while True:
             else:
                 ser.write(b'1')
 
-    time.sleep(0.5)
+    time.sleep(0.005)
