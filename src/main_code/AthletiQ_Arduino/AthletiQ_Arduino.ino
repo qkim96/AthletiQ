@@ -35,9 +35,10 @@ bool prevReading = LOW;                                // Actual voltage reading
 bool currReading = LOW;                                // Actual voltage reading (current)
 bool confirmedBState = LOW;                            // Confirmed button state (pressed / not pressed)
 bool isFront = false;                                  // Boolean to switch the word to display
+bool wifiConnected = false;                            // Boolean to indicate WiFi connection
 
 // --- Display Alphabet Bytes ---
-const byte alphabets[10] =                             // Byte data for each 7-segment alphabets
+const byte alphabets[15] =                             // Byte data for each 7-segment alphabets
 {                                                      // (bit order: DP-A)
   B10001110,  // F
   B10101111,  // r
@@ -49,7 +50,13 @@ const byte alphabets[10] =                             // Byte data for each 7-s
   B11111001,  // i
   B10100001,  // d
   B10000110,  // E
-  B11111111   // blank
+  B11111111,  // blank
+
+  B01111111,  // .
+  B01111111,  // .
+  B01111111,  // .
+  B01111111,  // .
+  B01111111   // .
 };
 
 
@@ -65,7 +72,6 @@ char receiveData() {
     rxData = Serial.read();
   }
 
-//  Serial.println(rxData);
   return rxData;
 }
 
@@ -105,17 +111,25 @@ bool buttonPressed()
 
 // ------------------------------------------------------------------------------------------------------------
 // Multiplex Display Function:
-// display a word (front/side)
+// display a word (front/side), or "....." (dots) when Raspberry Pi is not connected to WiFi
 // ------------------------------------------------------------------------------------------------------------
-void updateDisplay(bool showFront)
+void updateDisplay(bool showFront, bool noWifi=false)
 {
   // Delay for the display "on" time for each digit to visibly flicker (100Hz)
   if (currentTime - lastDisplayTime >= multiplexDelay) {
     // Turn off all digits
     for (int d = 0; d < 5; d++) digitalWrite(digitPins[d], LOW);
 
-    // Select an alphabet to display, depending on the mode (front/side)
-    byte currAlph = showFront ? alphabets[currentDigit] : alphabets[currentDigit+5];
+    // Select a starting byte to choose a word to display
+    byte currAlph;
+    if (noWifi) {
+      // Select a byte to display "....." (dots)
+      currAlph = alphabets[currentDigit+10];
+    }
+    else {
+      // Select an alphabet to display, depending on the mode (front/side)
+      currAlph = showFront ? alphabets[currentDigit] : alphabets[currentDigit+5];
+    }
 
     // Set segments to display the selected alphabet
     for (int s = 0; s < 8; s++) digitalWrite(segPins[s], bitRead(currAlph, s));
@@ -192,6 +206,18 @@ void loop()
 {
   // Current time
   currentTime = millis();
+  
+  // Blocking code to wait for Raspberry Pi to be connected to WiFi
+  if (!wifiConnected) {
+    updateDisplay(isFront, true);
+    if (Serial.available() > 0) {
+      char rxData = receiveData();
+      if (rxData == 's') {
+        wifiConnected = true;
+      }
+    }
+    return;
+  }
 
   // Detect a button press
   if (buttonPressed()) {
