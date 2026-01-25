@@ -210,9 +210,13 @@ void loop()
   // Blocking code to wait for Raspberry Pi to be connected to WiFi
   if (!wifiConnected) {
     updateDisplay(isFront, true);
+
+    // Perform an initial startup handshake
     if (Serial.available() > 0) {
-      char rxData = receiveData();
-      if (rxData == 's') {
+      byte rxByte = receiveData();
+      if (rxByte == 0x55) {   // wait for start byte
+        delay(2000);
+        Serial.write(0xAA);   // send ACK byte
         wifiConnected = true;
       }
     }
