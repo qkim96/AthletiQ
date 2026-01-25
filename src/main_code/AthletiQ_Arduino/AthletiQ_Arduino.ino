@@ -25,7 +25,7 @@ int currentDigit = 0;                                  // Current digit to displ
 
 // --- Servo Control Variables ---
 Servo camServo;                                        // Servo object
-unsigned int servoPos = 90;                            // Current servo position (initially 90 degrees)
+unsigned int servoPos = 84;                            // Current servo position (initially at 84 degrees)
 const int stepDelay = 10;                              // Delay between servo steps
 const int stepSize = 3;                                // Degrees to rotate per step
 unsigned long lastServoStepTime = 0;                   // Last time when the servo was rotated
@@ -34,13 +34,13 @@ unsigned long lastServoStepTime = 0;                   // Last time when the ser
 bool prevReading = LOW;                                // Actual voltage reading (previous)
 bool currReading = LOW;                                // Actual voltage reading (current)
 bool confirmedBState = LOW;                            // Confirmed button state (pressed / not pressed)
-bool isFront = false;                                  // Boolean to switch the word to display
-bool wifiConnected = false;                            // Boolean to indicate WiFi connection
+bool isFront = false;                                  // Boolean representing the current mode
+bool wifiConnected = false;                            // Boolean to indicate WiFi connection at Pi
 
 // --- Display Alphabet Bytes ---
 const byte alphabets[15] =                             // Byte data for each 7-segment alphabets
-{                                                      // (bit order: DP-A)
-  B10001110,  // F
+{                                                      // for common anode 5 digit display
+  B10001110,  // F                                     // (bit order: DP-A)
   B10101111,  // r
   B10100011,  // o
   B10101011,  // n
