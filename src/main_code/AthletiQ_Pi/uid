@@ -1,0 +1,12 @@
+#!/bin/bash
+
+ID="$1"
+FILE="{ABSOLUTE_PATH_TO}/AthletiQ/.uid"
+
+[ -z "$ID" ] && exit 1
+[[ "$ID" =~ ^[0-9]{6}$ ]] || exit 1
+
+echo -n "$ID" > "$FILE"
+chmod 600 "$FILE"
+
+echo "User ID set to $ID"
