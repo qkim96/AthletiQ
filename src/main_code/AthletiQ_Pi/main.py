@@ -116,7 +116,14 @@ def run():
         if time.time() - VE.finalized_time >= past_t:
             data_ready =\
                 DE.extract_data(
-                    frame, clip_ready, VE.is_recording, timestamps, utils.mode_idx, c_posteriori, results
+                    frame,
+                    clip_ready,
+                    VE.is_recording,
+                    VE.is_in_action,
+                    timestamps,
+                    utils.mode_idx,
+                    c_posteriori,
+                    results
                 )
         else:
             data_ready = False

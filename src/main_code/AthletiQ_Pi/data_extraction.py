@@ -63,6 +63,7 @@ class DataExtractor:
                      frame: np.ndarray,
                      clip_ready: bool,
                      is_recording: bool,
+                     is_in_action: bool,
                      full_timestamp: list,
                      idx: int,
                      ball_center: tuple[int, int],
@@ -78,6 +79,8 @@ class DataExtractor:
         :type clip_ready: bool
         :param is_recording: Whether the system is currently recording.
         :type is_recording: bool
+        :param is_in_action: Whether the action is in desired state ("thrown").
+        :type is_in_action: bool
         :param full_timestamp: List of all timestamps of the entire video clip.
         :type full_timestamp: list of str
         :param idx: Index used to select the current mode from `modes` list.
@@ -94,7 +97,8 @@ class DataExtractor:
         self.mp_results_buffer.append(results)
 
         if is_recording:
-            self.get_trajectory(ball_center)
+            if is_in_action:
+                self.get_trajectory(ball_center)
             if not self.ready_mode:
                 self.get_mode(idx)
             if not self.ready_angles and self.ready_mode:
