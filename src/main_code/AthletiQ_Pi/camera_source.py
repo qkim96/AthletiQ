@@ -5,9 +5,9 @@ class CameraSource:
     Attributes
     ----------
     platform : str
-        Platform type, either "pc" for standard webcams or "pi" for Raspberry Pi camera.
-    src : int
-        Video source index (for PC).
+        Platform type, "pc" for standard webcams, "pi" for Raspberry Pi camera, or "file" for reading video files.
+    src : int or str
+        Video source index (for PC), or file path (for reading video files).
     rate : int
         Target frame rate in frames per second.
     size : tuple[int, int]
@@ -46,17 +46,29 @@ class CameraSource:
             )
             self.cam.configure(config)
 
+        elif self.platform == "file":
+            import cv2
+            self.cam = cv2.VideoCapture(self.src)
+            if not self.cam.isOpened():
+                raise IOError(f"Cannot open video file: {self.src}")
+
         else:
             raise ValueError(f"Unknown platform: {self.platform}")
 
     def start(self):
-        self.cam.start()
+        if self.platform in ("pc", "pi"):
+            self.cam.start()
 
     def read(self):
         if self.platform == "pc":
             return self.cam.read()
         elif self.platform == "pi":
             return self.cam.capture_array("main")
+        elif self.platform == "file":
+            ret, frame = self.cam.read()
+            if not ret:
+                return None
+            return frame
         else:
             return None
 
@@ -65,3 +77,5 @@ class CameraSource:
             self.cam.stop()
         elif self.platform == "pi":
             self.cam.stop()
+        elif self.platform == "file":
+            self.cam.release()
