@@ -21,7 +21,7 @@ from firebase_admin import credentials, storage
 
 
 load_dotenv()
-USERID_FILE_PATH = os.getenv("USERID_FILE_PATH")
+UID_FILE_PATH = os.getenv("UID_FILE_PATH")
 LOG_FILE_PATH = os.getenv("LOG_FILE_PATH")
 FIREBASE_CRED_PATH = os.getenv('FIREBASE_CRED_PATH')
 FIREBASE_STORAGE_BUCKET = os.getenv('FIREBASE_STORAGE_BUCKET')

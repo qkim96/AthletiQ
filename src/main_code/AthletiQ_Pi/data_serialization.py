@@ -27,7 +27,7 @@ class DataSerializer:
         Converts a data entity object containing analyzed results into a structured dictionary.
 
         :param DE: An instance of `DataExtractor` class with following attributes:
-                   - `id` (int): Six-digit user ID
+                   - `uid` (int): Six-digit user ID
                    - `timestamps` (list of float): Timestamps of [videoStart, shotTime, videoEnd]
                    - `mode` (str): Specified mode received from Arduino
                    - `trajectory` (list of [x, y]): Ball trajectory coordinates
@@ -41,7 +41,7 @@ class DataSerializer:
         """
 
         data = {
-            "userID": DE.id,
+            "userID": DE.uid,
 
             "timestamp": {
                 "videoStart": DE.timestamps[0],

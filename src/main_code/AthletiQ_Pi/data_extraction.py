@@ -13,7 +13,7 @@ class DataExtractor:
         Height of the video frame in pixels.
     mp_results_buffer : deque
         Buffer of MediaPipe pose results to compute and extract data from the past frames.
-    id : str
+    uid : str
         Six-digit user ID of the person to be recorded.
     timestamps : list of str
         Video timestamps [videoStart, shotTime, videoEnd] in YYYY-MM-DD HH:MM:SS format.
@@ -45,7 +45,7 @@ class DataExtractor:
         self.frame_h = 0
         self.mp_results_buffer = deque(maxlen=snap_frame_diff)
 
-        self.id = ""
+        self.uid = ""
         self.timestamps = []
         self.mode = None
         self.trajectory = []
@@ -54,7 +54,7 @@ class DataExtractor:
         self.h_loc = None
         self.v_loc = None
 
-        self.ready_id = False
+        self.ready_uid = False
         self.ready_timestamp = False
         self.ready_mode = False
         self.ready_trajectory = False
@@ -115,7 +115,7 @@ class DataExtractor:
                 self.get_vertical_loc(self.height, ball_center)
 
         if clip_ready:
-            self.get_id(id_path=USERID_FILE_PATH)
+            self.get_uid(uid_path=UID_FILE_PATH)
             self.get_timestamps(full_timestamp)
             if len(self.trajectory) > 0:
                 self.ready_trajectory = True
@@ -123,7 +123,7 @@ class DataExtractor:
                     self.trajectory = None
 
         if (
-                self.ready_id
+                self.ready_uid
                 and self.ready_timestamp
                 and self.ready_mode
                 and self.ready_trajectory
@@ -143,7 +143,7 @@ class DataExtractor:
         :return: None
         """
 
-        self.id = ""
+        self.uid = ""
         self.timestamps = []
         self.mode = None
         self.trajectory = []
@@ -152,7 +152,7 @@ class DataExtractor:
         self.h_loc = None
         self.v_loc = None
 
-        self.ready_id = False
+        self.ready_uid = False
         self.ready_timestamp = False
         self.ready_mode = False
         self.ready_trajectory = False
@@ -161,26 +161,26 @@ class DataExtractor:
         self.ready_hloc = False
         self.ready_vloc = False
 
-    def get_id(self, id_path):
+    def get_uid(self, uid_path):
         """
         Reads user ID and stores the data.
 
-        :param id_path: Path to the file containing the user ID.
-        :type id_path: str
+        :param uid_path: Path to the file containing the user ID.
+        :type uid_path: str
         :return: None
         """
 
         try:
-            with open(id_path, "r", encoding="utf-8") as f:
-                self.id = f.read().strip()
+            with open(uid_path, "r", encoding="utf-8") as f:
+                self.uid = f.read().strip()
         except FileNotFoundError:
-            logging.error(f"File not found: {id_path}")
-            self.id = "000000"
+            logging.error(f"File not found: {uid_path}")
+            self.uid = "000000"
         except Exception as e:
             logging.error(f"Failed to read file: {e}")
-            self.id = "000000"
+            self.uid = "000000"
 
-        self.ready_id = True
+        self.ready_uid = True
 
     def get_timestamps(self, full_timestamp):
         """
