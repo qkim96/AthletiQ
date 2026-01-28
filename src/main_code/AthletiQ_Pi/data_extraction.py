@@ -199,9 +199,6 @@ class DataExtractor:
             return
 
         set_landmarks = self.mp_results_buffer[0].pose_landmarks
-        tmp_frame_to_save = self.tmp_frame_buffer[0]
-        output_path = "frame_capture.png"
-        cv2.imwrite(output_path, tmp_frame_to_save)
 
         shoulderL = set_landmarks.landmark[12]
         shoulderR = set_landmarks.landmark[11]
