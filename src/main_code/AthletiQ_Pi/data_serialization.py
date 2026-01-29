@@ -41,7 +41,7 @@ class DataSerializer:
         """
 
         data = {
-            "userID": int(DE.uid),
+            "userID": DE.uid,
 
             "timestamp": {
                 "videoStart": DE.timestamps[0],
