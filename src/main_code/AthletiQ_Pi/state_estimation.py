@@ -128,7 +128,7 @@ class StateEstimator:
         feat2 = any(np.linalg.norm(ball - np.array(hand)) < dist_thresh for hand in hands)
 
         # A set of features (booleans) encoded into an observation (binary string)
-        self.o_t = str(int(feat0)) + str(int(feat1)) + str(int(feat2))
+        self.o_t = f"{int(feat0)}{int(feat1)}{int(feat2)}"
 
     def update_forward(self):
         """
