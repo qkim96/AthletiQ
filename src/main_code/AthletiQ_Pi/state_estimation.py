@@ -103,11 +103,6 @@ class StateEstimator:
         Extracts binary geometric features from the ball and pose landmarks
         and encodes them as a 3-bit observation string for the HMM.
 
-        Observation features:
-        - Ball above nose
-        - Hand above nose
-        - Hand close to the ball
-
         :param ball_pos: (x, y) pixel coordinates of the ball.
         :type ball_pos: tuple[int, int]
         :param radius: Radius of the detected ball.
@@ -121,17 +116,16 @@ class StateEstimator:
             self.o_t = None
             return
 
-        ball_x, ball_y = ball_pos
-        (nose_x, nose_y), (handL_x, handL_y), (handR_x, handR_y), _ = coords
+        (ball_x, ball_y) = ball_pos
+        (nose_x, nose_y), *hands, _ = coords
 
-        dist_ball_to_handL = np.linalg.norm(np.array([ball_x, ball_y]) - np.array([handL_x, handL_y]))
-        dist_ball_to_handR = np.linalg.norm(np.array([ball_x, ball_y]) - np.array([handR_x, handR_y]))
+        ball = np.array(ball_pos)
         dist_thresh = radius * 3
 
         # Factorized features as booleans
         feat0 = ball_y < nose_y
-        feat1 = handL_y < nose_y or handR_y < nose_y
-        feat2 = dist_ball_to_handL < dist_thresh or dist_ball_to_handR < dist_thresh
+        feat1 = any(hand_y < nose_y for _, hand_y in hands)
+        feat2 = any(np.linalg.norm(ball - np.array(hand)) < dist_thresh for hand in hands)
 
         # A set of features (booleans) encoded into an observation (binary string)
         self.o_t = str(int(feat0)) + str(int(feat1)) + str(int(feat2))
