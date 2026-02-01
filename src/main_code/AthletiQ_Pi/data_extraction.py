@@ -175,10 +175,10 @@ class DataExtractor:
                 self.uid = f.read().strip()
         except FileNotFoundError:
             logging.error(f"File not found: {uid_path}")
-            self.uid = "000000"
+            self.uid = "999999"
         except Exception as e:
             logging.error(f"Failed to read file: {e}")
-            self.uid = "000000"
+            self.uid = "999999"
 
         self.ready_uid = True
 
