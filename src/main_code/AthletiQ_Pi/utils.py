@@ -33,6 +33,9 @@ res: tuple[int, int] = (1280, 720)
 port: str = '/dev/serial0'
 baud: int = 230400
 
+max_jump: int = int(res[0] / 8)
+max_ignore: int = int(fps / 2)
+
 min_det_conf: float = 0.5
 min_tra_conf: float = 0.5
 width_cutoff: float = 0.3
@@ -125,8 +128,9 @@ def calc_midpoint(p1, p2):
 
 def draw_circles(frame, center, center_hat, radius):
     if radius:
-        cv2.circle(frame, center, int(radius), (0, 255, 0), 2)
-        cv2.circle(frame, center, 5, (0, 255, 0), -1)
+        if center != (None, None):
+            cv2.circle(frame, center, int(radius), (0, 255, 0), 2)
+            cv2.circle(frame, center, 5, (0, 255, 0), -1)
         cv2.circle(frame, center_hat, int(radius), (255, 0, 0), 2)
         cv2.circle(frame, center_hat, 5, (255, 0, 0), -1)
 
