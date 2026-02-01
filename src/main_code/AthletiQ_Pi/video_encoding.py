@@ -191,7 +191,6 @@ class VideoEncoder:
             print("Video clip discarded (clip too short)")
             return None, None
 
-        self.finalized_time = time.time()
         print("Video clip created")
         return self.encode_h264(frames), timestamps
 
