@@ -100,19 +100,6 @@ def run():
             clip_ready = True
             clip_filename = f'{filetime}.h264'
 
-            if upload_files:
-                clip_success = \
-                    pub.upload_file(
-                        data_bytes=h264_bytes,
-                        remote_path=f'{filetime}/{clip_filename}',
-                        content_type='video/h264'
-                    )
-
-            if save_files:
-                with open(clip_filename, "wb") as f:
-                    f.write(h264_bytes)
-                print(f"Saved clip: {clip_filename}")
-
         if time.time() - VE.finalized_time >= past_t:
             data_ready =\
                 DE.extract_data(
@@ -132,13 +119,12 @@ def run():
             dict_data = DS.to_dict(DE)
             json_data = DS.to_json(dict_data)
             json_filename = f'{filetime}.json'
-            DE.clear_data()
 
             if upload_files:
                 json_success = \
                     pub.upload_file(
                         data_bytes=json_data,
-                        remote_path=f'{filetime}/{json_filename}',
+                        remote_path=f'{DE.uid}/{filetime}/{json_filename}',
                         content_type='application/json'
                     )
 
@@ -146,6 +132,23 @@ def run():
                 with open(json_filename, "w", encoding="utf-8") as f:
                     f.write(json_data)
                 print(f"Saved json: {json_filename}")
+
+            if clip_ready:
+                if upload_files:
+                    clip_success = \
+                        pub.upload_file(
+                            data_bytes=h264_bytes,
+                            remote_path=f'{DE.uid}/{filetime}/{clip_filename}',
+                            content_type='video/h264'
+                        )
+
+                if save_files:
+                    with open(clip_filename, "wb") as f:
+                        f.write(h264_bytes)
+                    print(f"Saved clip: {clip_filename}")
+
+            VE.finalized_time = time.time()
+            DE.clear_data()
 
         if clip_success and json_success:
             print(f"Successfully uploaded files {clip_filename} and {json_filename} to Firebase Storage")
