@@ -1,0 +1,45 @@
+/etc/
+├── xdg/lxsession/LXDE-pi/
+│   └── autostart
+└── wpa_supplicant/
+    └── wpa_supplicant.conf
+
+
+/usr/local/bin/
+└── uid
+
+
+{ABSOLUTE_PATH_TO}/AthletiQ/
+├── .env
+├── .uid
+├── main.py
+├── utils.py
+├── camera_source.py
+├── object_localization.py
+├── pose_detection.py
+├── state_estimation.py
+├── video_encoding.py
+├── data_extraction.py
+├── data_serialization.py
+├── server_publication.py
+├── serial.communication.py
+│
+├── firebase/
+│   ├── cred/
+│   │   └── <FIREBASE_ACCOUNT_KEY>.json
+│   ├── downloads/
+│   │   └── 000000/
+│   │       ├── front/
+│   │       │   ├── front.h264
+│   │       │   └── front.json
+│   │       └── side/
+│   │           ├── side.h264
+│   │           └── side.json
+│   └── json/
+│       ├── AthletiQ_JSON_Schema.json
+│       ├── sample_front.json
+│       └── sample_side.json
+│
+└── log/
+    ├── main.log
+    └── system.log
