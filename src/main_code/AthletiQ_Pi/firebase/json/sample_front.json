@@ -1,0 +1,26 @@
+{
+  "userID": "123456",
+
+  "timestamp": {
+    "videoStart": "2026-01-20 21:03:12",
+    "shotTime": "2026-01-20 21:03:13",
+    "videoEnd": "2026-01-20 21:03:19"
+  },
+
+  "mode": "Front",
+
+  "ballTrajectory": null,
+
+  "jointAngles": {
+    "elbow": null,
+    "wrist": null
+  },
+
+  "ballReleaseMoment": {
+    "height": 902,
+    "ballLocation": {
+      "horizontal": 0.52,
+      "vertical": 1.17
+    }
+  }
+}
