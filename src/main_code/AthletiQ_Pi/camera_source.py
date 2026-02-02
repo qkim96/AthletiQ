@@ -1,6 +1,6 @@
 class CameraSource:
     """
-    Handles video capture from different platforms (PC or Raspberry Pi).
+    Handles video capture from different platforms (PC / Raspberry Pi / video file).
 
     Attributes
     ----------
