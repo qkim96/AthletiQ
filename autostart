@@ -1,0 +1,4 @@
+@lxpanel --profile LXDE-pi
+@pcmanfm --desktop --profile LXDE-pi
+@xscreensaver -no-splash
+@{ABSOLUTE_PATH_TO}/AthletiQ/main.py >> {ABSOLUTE_PATH_TO}/AthletiQ/log/system.log 2>&1
