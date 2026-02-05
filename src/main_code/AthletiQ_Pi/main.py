@@ -10,7 +10,7 @@ and missed detections. Player pose landmarks are extracted using MediaPipe and f
 estimated position of the ball to construct binary observation features for action analysis.
 
 Shooting action recognition is formulated as a Hidden Markov Model with three hidden action
-states: 'Prep' (Π), 'Set' (Σ), and 'Thrown' (Τ). Having binary observations and factorized
+states: 'Prep' (ρ), 'Set' (σ), and 'Thrown' (τ). Having binary observations and factorized
 features, the system uses a Bernoulli HMM with factorized emissions, and at each time step
 (camera frame), online Bayesian filtering is performed via the HMM forward algorithm with
 a local Maximum a Posteriori (MAP) deterministic decision rule to infer the hidden states.
